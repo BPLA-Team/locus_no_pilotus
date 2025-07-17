@@ -3,6 +3,112 @@
 
 namespace data_tools {
 
+// MARK: macros hell
+
+#define CHECK_AND_REMOVE_LAST \
+  {                           \
+    CheckErrorValues_();      \
+    RemoveLastDuplicate();    \
+  }
+
+#define CHECK_AND_REMOVE_ALL \
+  {                          \
+    CheckErrorValues_();     \
+    RemoveAllDuplicates();   \
+  }
+
+#define ADD_BY_LINK(Object, object_name)                 \
+  {                                                      \
+    object_name##s_.emplace_back(new gui::Object(data)); \
+                                                         \
+    CHECK_AND_REMOVE_LAST;                               \
+  }
+
+#define ADD_BY_VECTOR(object_name)                                         \
+  {                                                                        \
+    for (const auto& object_name : new_##object_name##s) Add(object_name); \
+                                                                           \
+    CHECK_AND_REMOVE_LAST;                                                 \
+  }
+
+#define SET_BY_VECTOR(object_name) \
+  {                                \
+    object_name##s_.clear();       \
+    Add(object_name##s);           \
+                                   \
+    CHECK_AND_REMOVE_ALL;          \
+  }
+
+#define GET_OBJECTS(Object, object_name)                         \
+  std::vector<gui::Object*> DataManager::Get##Object##sPtrs() {  \
+    auto res = std::vector<gui::Object*>();                      \
+    for (auto& object_name##_ptr_ : object_name##s_)             \
+      res.push_back(object_name##_ptr_.get());                   \
+                                                                 \
+    return res;                                                  \
+  }                                                              \
+                                                                 \
+  std::vector<gui::Object> DataManager::Get##Object##s() const { \
+    auto res = std::vector<gui::Object>();                       \
+    for (auto& object_name##_ptr_ : object_name##s_)             \
+      res.push_back(*object_name##_ptr_);                        \
+                                                                 \
+    return res;                                                  \
+  }
+
+#define ADD_BY_GUI_POINTER(Object, object_name)                                \
+  void DataManager::Add(gui::Object* object_name##_ptr) {                      \
+    object_name##s_.emplace_back(object_name##_ptr);                           \
+    object_name##_ptr->GetData().SetId(GetMinId_(gui::ObjectType::Object##s)); \
+                                                                               \
+    CHECK_AND_REMOVE_LAST;                                                     \
+  }                                                                            \
+                                                                               \
+  void DataManager::Add(std::vector<gui::Object*> new_##object_name##s) {      \
+    for (const auto& object_name : new_##object_name##s) {                     \
+      Add(object_name);                                                        \
+      object_name->GetData().SetId(GetMinId_(gui::ObjectType::Object##s));     \
+    }                                                                          \
+                                                                               \
+    CHECK_AND_REMOVE_LAST;                                                     \
+  }
+
+#define OBJECT_METHODS(Object, object_name)                               \
+  void DataManager::Add(lib::Object& data) {                              \
+    ADD_BY_LINK(Object, object_name);                                     \
+  }                                                                       \
+                                                                          \
+  void DataManager::Add(const lib::Object& data) {                        \
+    ADD_BY_LINK(Object, object_name);                                     \
+  }                                                                       \
+                                                                          \
+  ADD_BY_GUI_POINTER(Object, object_name)                                 \
+                                                                          \
+  void DataManager::Add(std::vector<lib::Object>& new_##object_name##s) { \
+    ADD_BY_VECTOR(object_name);                                           \
+  }                                                                       \
+                                                                          \
+  void DataManager::Add(                                                  \
+      const std::vector<lib::Object>& new_##object_name##s) {             \
+    ADD_BY_VECTOR(object_name);                                           \
+  }                                                                       \
+                                                                          \
+  void DataManager::Set(std::vector<gui::Object*> object_name##s) {       \
+    SET_BY_VECTOR(object_name);                                           \
+  }                                                                       \
+                                                                          \
+  void DataManager::Set(std::vector<lib::Object>& object_name##s) {       \
+    SET_BY_VECTOR(object_name);                                           \
+  }                                                                       \
+                                                                          \
+  void DataManager::Set(const std::vector<lib::Object>& object_name##s) { \
+    SET_BY_VECTOR(object_name);                                           \
+  }                                                                       \
+                                                                          \
+  GET_OBJECTS(Object, object_name)
+
+// MARK: macros end
+
 void DataManager::Remove(gui::ObjectType obj_type, size_t index) {
   switch (obj_type) {
     case gui::ObjectType::Targets: {
@@ -22,38 +128,46 @@ void DataManager::Remove(gui::ObjectType obj_type, size_t index) {
     }
 
     case gui::ObjectType::TrappyCircles: {
-      tr_circles_.erase(tr_circles_.begin() + index);
+      trappy_circles_.erase(trappy_circles_.begin() + index);
       break;
     }
 
     case gui::ObjectType::TrappyLines: {
-      tr_lines_.erase(tr_lines_.begin() + index);
+      trappy_lines_.erase(trappy_lines_.begin() + index);
       break;
     }
   }
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 void DataManager::Clear() {
   targets_.clear();
-  tr_circles_.clear();
-  tr_lines_.clear();
+  trappy_circles_.clear();
+  trappy_lines_.clear();
   hills_.clear();
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 // ----------------------   Target methods   ----------------------
 
-void DataManager::Add(gui::Target* t) {
-  if (targets_.empty()) t = new gui::Airport(*t);
+void DataManager::Add(gui::Target* target) {
+  if (targets_.empty()) target = new gui::Airport(*target);
 
-  targets_.emplace_back(t);
-  t->GetData().SetId(GetMinId(gui::ObjectType::Targets));
+  targets_.emplace_back(target);
+  target->GetData().SetId(GetMinId_(gui::ObjectType::Targets));
 
-  CheckErrorValues();
-  RemoveLastDuplicate();
+  CHECK_AND_REMOVE_LAST;
+}
+
+void DataManager::Add(std::vector<gui::Target*> new_targets) {
+  for (const auto& target : new_targets) {
+    Add(target);
+    target->GetData().SetId(GetMinId_(gui::ObjectType::Targets));
+  }
+
+  CHECK_AND_REMOVE_LAST;
 }
 
 void DataManager::Add(lib::Target& data) {
@@ -62,8 +176,7 @@ void DataManager::Add(lib::Target& data) {
   else
     targets_.emplace_back(new gui::Target(data));
 
-  CheckErrorValues();
-  RemoveLastDuplicate();
+  CHECK_AND_REMOVE_LAST;
 }
 
 void DataManager::Add(const lib::Target& data) {
@@ -72,326 +185,48 @@ void DataManager::Add(const lib::Target& data) {
   else
     targets_.emplace_back(new gui::Target(data));
 
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(std::vector<gui::Target*> new_targets) {
-  for (const auto& target : new_targets) {
-    Add(target);
-    target->GetData().SetId(GetMinId(gui::ObjectType::Targets));
-  }
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
+  CHECK_AND_REMOVE_LAST;
 }
 
 void DataManager::Add(std::vector<lib::Target>& new_targets) {
-  for (const auto& target : new_targets) Add(target);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
+  ADD_BY_VECTOR(target);
 }
 
 void DataManager::Add(const std::vector<lib::Target>& new_targets) {
-  for (const auto& target : new_targets) Add(target);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
+  ADD_BY_VECTOR(target);
 }
 
 void DataManager::Set(std::vector<gui::Target*> targets) {
-  targets_.clear();
-  Add(targets);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
+  SET_BY_VECTOR(target);
 }
 
 void DataManager::Set(std::vector<lib::Target>& targets) {
-  targets_.clear();
-  Add(targets);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
+  SET_BY_VECTOR(target);
 }
 
 void DataManager::Set(const std::vector<lib::Target>& targets) {
-  targets_.clear();
-  Add(targets);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
+  SET_BY_VECTOR(target);
 }
 
-std::vector<gui::Target*> DataManager::GetTargetsPtrs() {
-  auto res = std::vector<gui::Target*>();
-  for (auto& target_ptr_ : targets_) res.push_back(target_ptr_.get());
+GET_OBJECTS(Target, target)
 
-  return res;
-}
+// ----------------------    Hill methods    ------------------------
 
-std::vector<gui::Target> DataManager::GetTargets() const {
-  auto res = std::vector<gui::Target>();
-  for (auto& target_ptr_ : targets_) res.push_back(*target_ptr_);
+OBJECT_METHODS(Hill, hill)
 
-  return res;
-}
+// ---------------------- TrappyCircle methods ----------------------
 
-// ----------------------    Hill methods    ----------------------
-
-void DataManager::Add(gui::Hill* h) {
-  hills_.emplace_back(h);
-  h->GetData().SetId(GetMinId(gui::ObjectType::Hills));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-#define ADD_BY_LINK(ObjectType, object_name)                 \
-  {                                                          \
-    object_name##s_.emplace_back(new gui::ObjectType(data)); \
-                                                             \
-    CheckErrorValues();                                      \
-    RemoveLastDuplicate();                                   \
-  }
-
-void DataManager::Add(lib::Hill& data) { ADD_BY_LINK(Hill, hill); }
-
-void DataManager::Add(const lib::Hill& data) { ADD_BY_LINK(Hill, hill); }
-
-void DataManager::Add(std::vector<gui::Hill*> new_hills) {
-  for (const auto& hill : new_hills) {
-    Add(hill);
-    hill->GetData().SetId(GetMinId(gui::ObjectType::Hills));
-  }
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-#define ADD_BY_VECTOR(object_name)                                         \
-  {                                                                        \
-    for (const auto& object_name : new_##object_name##s) Add(object_name); \
-                                                                           \
-    CheckErrorValues();                                                    \
-    RemoveLastDuplicate();                                                 \
-  }
-
-void DataManager::Add(std::vector<lib::Hill>& new_hills) {
-  ADD_BY_VECTOR(hill);
-}
-
-void DataManager::Add(const std::vector<lib::Hill>& new_hills) {
-  ADD_BY_VECTOR(hill);
-}
-
-#define SET_BY_VECTOR(object_name) \
-  {                                \
-    object_name##s_.clear();       \
-    Add(object_name##s);           \
-                                   \
-    CheckErrorValues();            \
-    RemoveLastDuplicate();         \
-  }
-
-void DataManager::Set(std::vector<gui::Hill*> hills) { SET_BY_VECTOR(hill); }
-
-void DataManager::Set(std::vector<lib::Hill>& hills) { SET_BY_VECTOR(hill); }
-
-void DataManager::Set(const std::vector<lib::Hill>& hills) {
-  SET_BY_VECTOR(hill);
-}
-
-std::vector<gui::Hill*> DataManager::GetHillsPtrs() {
-  auto res = std::vector<gui::Hill*>();
-  for (auto& hill_ptr_ : hills_) res.push_back(hill_ptr_.get());
-
-  return res;
-}
-
-std::vector<gui::Hill> DataManager::GetHills() const {
-  auto res = std::vector<gui::Hill>();
-  for (auto& hill_ptr_ : hills_) res.push_back(*hill_ptr_);
-
-  return res;
-}
-
-// ---------------------- TrappyCircle methods ----------------------s
-
-void DataManager::Add(gui::TrappyCircle* tr_c) {
-  tr_circles_.emplace_back(tr_c);
-  tr_c->GetData().SetId(GetMinId(gui::ObjectType::TrappyCircles));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(lib::TrappyCircle& data) {
-  tr_circles_.emplace_back(new gui::TrappyCircle(data));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(const lib::TrappyCircle& data) {
-  tr_circles_.emplace_back(new gui::TrappyCircle(data));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(std::vector<gui::TrappyCircle*> new_tr_circles) {
-  for (const auto& tr_circle : new_tr_circles) {
-    Add(tr_circle);
-    tr_circle->GetData().SetId(GetMinId(gui::ObjectType::TrappyCircles));
-  }
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(std::vector<lib::TrappyCircle>& new_tr_circles) {
-  for (const auto& tr_circle : new_tr_circles) Add(tr_circle);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(const std::vector<lib::TrappyCircle>& new_tr_circles) {
-  for (const auto& tr_circle : new_tr_circles) Add(tr_circle);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Set(std::vector<gui::TrappyCircle*> tr_circles) {
-  tr_circles_.clear();
-  Add(tr_circles);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-void DataManager::Set(std::vector<lib::TrappyCircle>& tr_circles) {
-  tr_circles_.clear();
-  Add(tr_circles);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-void DataManager::Set(const std::vector<lib::TrappyCircle>& tr_circles) {
-  tr_circles_.clear();
-  Add(tr_circles);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-std::vector<gui::TrappyCircle*> DataManager::GetTrappyCirclesPtrs() {
-  auto res = std::vector<gui::TrappyCircle*>();
-  for (auto& tr_circle_ptr : tr_circles_) res.push_back(tr_circle_ptr.get());
-
-  return res;
-}
-
-std::vector<gui::TrappyCircle> DataManager::GetTrappyCircles() const {
-  auto res = std::vector<gui::TrappyCircle>();
-  for (auto& tr_circle_ptr : tr_circles_) res.push_back(*tr_circle_ptr);
-
-  return res;
-}
+OBJECT_METHODS(TrappyCircle, trappy_circle)
 
 // ----------------------  TrappyLine methods  ----------------------
 
-void DataManager::Add(gui::TrappyLine* tr_l) {
-  tr_lines_.emplace_back(tr_l);
-  tr_l->GetData().SetId(GetMinId(gui::ObjectType::TrappyLines));
+OBJECT_METHODS(TrappyLine, trappy_line)
 
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
+// ------------------------------------------------------------------
 
-void DataManager::Add(lib::TrappyLine& data) {
-  tr_lines_.emplace_back(new gui::TrappyLine(data));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(const lib::TrappyLine& data) {
-  tr_lines_.emplace_back(new gui::TrappyLine(data));
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(std::vector<gui::TrappyLine*> new_tr_lines) {
-  for (const auto& tr_line : new_tr_lines) {
-    Add(tr_line);
-    tr_line->GetData().SetId(GetMinId(gui::ObjectType::TrappyLines));
-  }
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(std::vector<lib::TrappyLine>& new_tr_lines) {
-  for (auto& tr_line : new_tr_lines) Add(tr_line);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Add(const std::vector<lib::TrappyLine>& new_tr_lines) {
-  for (auto& tr_line : new_tr_lines) Add(tr_line);
-
-  CheckErrorValues();
-  RemoveLastDuplicate();
-}
-
-void DataManager::Set(std::vector<gui::TrappyLine*> tr_lines) {
-  tr_lines_.clear();
-  Add(tr_lines);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-void DataManager::Set(std::vector<lib::TrappyLine>& tr_lines) {
-  tr_lines_.clear();
-  Add(tr_lines);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-void DataManager::Set(const std::vector<lib::TrappyLine>& tr_lines) {
-  tr_lines_.clear();
-  Add(tr_lines);
-
-  CheckErrorValues();
-  RemoveAllDuplicates();
-}
-
-std::vector<gui::TrappyLine*> DataManager::GetTrappyLinesPtrs() {
-  auto res = std::vector<gui::TrappyLine*>();
-  for (auto& tr_line_ptr : tr_lines_) res.push_back(tr_line_ptr.get());
-
-  return res;
-}
-
-std::vector<gui::TrappyLine> DataManager::GetTrappyLines() const {
-  auto res = std::vector<gui::TrappyLine>();
-  for (auto& tr_line_ptr : tr_lines_) res.push_back(*tr_line_ptr);
-
-  return res;
-}
-
-void DataManager::CheckErrorValues() {
+void DataManager::CheckErrorValues_() {
   if (targets_.size() > 10000 || hills_.size() > 10000 ||
-      tr_circles_.size() > 10000 || tr_lines_.size() > 10000)
+      trappy_circles_.size() > 10000 || trappy_lines_.size() > 10000)
     throw std::invalid_argument("Exceeding the maximum objects number!");
 }
 
@@ -412,17 +247,17 @@ bool DataManager::RemoveLastDuplicate() {
         res = true;
       }
 
-  if (!tr_circles_.empty())
-    for (size_t i = 0; i < tr_circles_.size() - 1; i++)
-      if (*tr_circles_[i] == *tr_circles_[tr_circles_.size() - 1]) {
-        Remove(gui::ObjectType::TrappyCircles, tr_circles_.size() - 1);
+  if (!trappy_circles_.empty())
+    for (size_t i = 0; i < trappy_circles_.size() - 1; i++)
+      if (*trappy_circles_[i] == *trappy_circles_[trappy_circles_.size() - 1]) {
+        Remove(gui::ObjectType::TrappyCircles, trappy_circles_.size() - 1);
         res = true;
       }
 
-  if (!tr_lines_.empty())
-    for (size_t i = 0; i < tr_lines_.size() - 1; i++)
-      if (*tr_lines_[i] == *tr_lines_[tr_lines_.size() - 1]) {
-        Remove(gui::ObjectType::TrappyLines, tr_lines_.size() - 1);
+  if (!trappy_lines_.empty())
+    for (size_t i = 0; i < trappy_lines_.size() - 1; i++)
+      if (*trappy_lines_[i] == *trappy_lines_[trappy_lines_.size() - 1]) {
+        Remove(gui::ObjectType::TrappyLines, trappy_lines_.size() - 1);
         res = true;
       }
 
@@ -448,18 +283,18 @@ bool DataManager::RemoveAllDuplicates() {
           res = true;
         }
 
-  if (!tr_circles_.empty())
-    for (size_t i = 0; i < tr_circles_.size() - 1; i++)
-      for (size_t j = i + 1; j < tr_circles_.size(); j++)
-        if (*tr_circles_[i] == *tr_circles_[j]) {
+  if (!trappy_circles_.empty())
+    for (size_t i = 0; i < trappy_circles_.size() - 1; i++)
+      for (size_t j = i + 1; j < trappy_circles_.size(); j++)
+        if (*trappy_circles_[i] == *trappy_circles_[j]) {
           Remove(gui::ObjectType::TrappyCircles, j);
           res = true;
         }
 
-  if (!tr_lines_.empty())
-    for (size_t i = 0; i < tr_lines_.size() - 1; i++)
-      for (size_t j = i + 1; j < tr_lines_.size(); j++)
-        if (*tr_lines_[i] == *tr_lines_[j]) {
+  if (!trappy_lines_.empty())
+    for (size_t i = 0; i < trappy_lines_.size() - 1; i++)
+      for (size_t j = i + 1; j < trappy_lines_.size(); j++)
+        if (*trappy_lines_[i] == *trappy_lines_[j]) {
           Remove(gui::ObjectType::TrappyLines, j);
           res = true;
         }
@@ -467,12 +302,12 @@ bool DataManager::RemoveAllDuplicates() {
   return res;
 }
 
-unsigned short DataManager::GetMinId(gui::ObjectType obj_type) {
+unsigned short DataManager::GetMinId_(gui::ObjectType obj_type) {
   std::vector<unsigned short> ids;
 
   switch (obj_type) {
     case gui::ObjectType::Targets: {
-      for (auto& t : targets_) ids.push_back(t->GetData().GetId());
+      for (auto& target : targets_) ids.push_back(target->GetData().GetId());
       unsigned short id = 10000;
       while (!(ids.empty() || find(ids.begin(), ids.end(), id) == ids.end()))
         id++;
@@ -481,7 +316,8 @@ unsigned short DataManager::GetMinId(gui::ObjectType obj_type) {
     }
 
     case gui::ObjectType::TrappyCircles: {
-      for (auto& trc : tr_circles_) ids.push_back(trc->GetData().GetId());
+      for (auto& trappy_circle : trappy_circles_)
+        ids.push_back(trappy_circle->GetData().GetId());
       unsigned short id = 20000;
       while (!(ids.empty() || find(ids.begin(), ids.end(), id) == ids.end()))
         id++;
@@ -490,7 +326,8 @@ unsigned short DataManager::GetMinId(gui::ObjectType obj_type) {
     }
 
     case gui::ObjectType::TrappyLines: {
-      for (auto& trl : tr_lines_) ids.push_back(trl->GetData().GetId());
+      for (auto& trappy_line : trappy_lines_)
+        ids.push_back(trappy_line->GetData().GetId());
       unsigned short id = 30000;
       while (!(ids.empty() || find(ids.begin(), ids.end(), id) == ids.end()))
         id++;

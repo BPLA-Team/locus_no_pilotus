@@ -2,7 +2,7 @@
 #include "gui/flying_robot.h"
 #include "main/mainwindow.h"
 
-gui::ObjectType MainWindow::GetObjType() const {
+gui::ObjectType MainWindow::GetObjType_() const {
   switch (cursor_) {
     case CursorType::TrCircleCursor:
       return gui::ObjectType::TrappyCircles;
@@ -16,7 +16,7 @@ gui::ObjectType MainWindow::GetObjType() const {
 }
 
 void MainWindow::on_addTargetPushButton_clicked() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
   connect(ui->plot, &QCustomPlot::mouseDoubleClick, this,
           &MainWindow::mousePressObjectsButton);
 
@@ -26,7 +26,7 @@ void MainWindow::on_addTargetPushButton_clicked() {
 }
 
 void MainWindow::on_addTrappyCirclePushButton_clicked() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
   connect(ui->plot, &QCustomPlot::mouseDoubleClick, this,
           &MainWindow::mousePressObjectsButton);
 
@@ -36,7 +36,7 @@ void MainWindow::on_addTrappyCirclePushButton_clicked() {
 }
 
 void MainWindow::on_addTrappyLinePushButton_clicked() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
   connect(ui->plot, &QCustomPlot::mouseDoubleClick, this,
           &MainWindow::mousePressObjectsButton);
 
@@ -46,7 +46,7 @@ void MainWindow::on_addTrappyLinePushButton_clicked() {
 }
 
 void MainWindow::on_addHillPushButton_clicked() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
   connect(ui->plot, &QCustomPlot::mouseDoubleClick, this,
           &MainWindow::mousePressObjectsButton);
 
@@ -124,7 +124,7 @@ void MainWindow::on_yAxis_rangeChanged(QCPRange range) {
 }
 
 void MainWindow::mousePressRemoveObject() {
-  DeCalcTrajectory();
+  DeCalcTrajectory_();
 
   if (ui->plot->selectedGraphs().size() > 0) {
     bool is_found = false;
@@ -196,7 +196,7 @@ void MainWindow::on_actionHelp_triggered() {
 }
 
 void MainWindow::on_robotsApplyAmountPushButton_clicked() {
-  DeCalcTrajectory();
+  DeCalcTrajectory_();
   area_->ReDraw();
   unsigned short amount = ui->robotsAmountLineEdit->displayText().toUShort();
 

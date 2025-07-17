@@ -20,16 +20,16 @@ void TrappyLine::Draw(QCustomPlot* plot) {
   graph_->addData(targets.second.GetPoint().x, targets.second.GetPoint().y);
 }
 
-void TrappyLine::UpdateData(gui::Target* first_target,
-                            gui::Target* second_target) {
+void TrappyLine::UpdateData_(gui::Target* first_target,
+                             gui::Target* second_target) {
   data_.SetTargets(&first_target->GetData(), &second_target->GetData());
 
   targets_.first = first_target;
   targets_.second = second_target;
 }
 
-void TrappyLine::UpdateData(std::pair<gui::Target*, gui::Target*> targets) {
-  UpdateData(targets.first, targets.second);
+void TrappyLine::UpdateData_(std::pair<gui::Target*, gui::Target*> targets) {
+  UpdateData_(targets.first, targets.second);
 }
 
 }  // namespace gui

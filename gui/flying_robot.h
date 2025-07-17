@@ -23,9 +23,9 @@ class FlyingRobot : public Drawable {
     // Сразу задаем нужные приватные поля при инициализации экземпляра класса, в
     // зависимости от того, lib::Segment является аркой или прямой линией
     if (trajectory_->Segments()[0].IsArc())
-      UpdateCircleFields();
+      UpdateCircleFields_();
     else
-      UpdateLineFields();
+      UpdateLineFields_();
   }
 
   /**
@@ -74,28 +74,28 @@ class FlyingRobot : public Drawable {
   /**
    * @brief Обновляет поля cos_of_line_ и sin_of_line_
    */
-  void UpdateLineFields();
+  void UpdateLineFields_();
 
   /**
    * @brief Обновляет поля curr_angle_on_circle_, clockwise_ и
    * distribution_of_angle_
    */
-  void UpdateCircleFields();
+  void UpdateCircleFields_();
 
   /**
    * @brief Берет следующий Segment, обновляя приватные поля
    */
-  void UpdateSegment();
+  void UpdateSegment_();
 
   /**
    * @brief Обновляет текущее положение точки на линии
    */
-  void SetNewPositionOnLine();
+  void SetNewPositionOnLine_();
 
   /**
    * @brief Обновляет текущее положение точки на окружности
    */
-  void SetNewPositionOnCircle();
+  void SetNewPositionOnCircle_();
 };
 
 }  // namespace gui

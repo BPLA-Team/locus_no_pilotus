@@ -22,7 +22,7 @@ bool IsPointInsideHill(lib::Point point, std::vector<lib::Point> vertices) {
   return inside;
 }
 
-void PlotArea::CheckIntersectionsBetweenTrappyCircles() {
+void PlotArea::CheckIntersectionsBetweenTrappyCircles_() {
   if (manager_->GetTrappyCircles().empty()) return;
 
   for (size_t i = 0; i < manager_->GetTrappyCircles().size() - 1; i++) {
@@ -44,7 +44,7 @@ void PlotArea::CheckIntersectionsBetweenTrappyCircles() {
   }
 }
 
-void PlotArea::CheckIntersectionsBetweenHills() {
+void PlotArea::CheckIntersectionsBetweenHills_() {
   if (manager_->GetHillsPtrs().empty()) return;
 
   for (size_t i = 0; i < manager_->GetHills().size() - 1; i++) {
@@ -75,9 +75,9 @@ void PlotArea::CheckIntersectionsBetweenHills() {
   }
 }
 
-void PlotArea::CheckTrappyCircles() {
+void PlotArea::CheckTrappyCircles_() {
   // Проверка на пересечения с другими TrappyCircle
-  CheckIntersectionsBetweenTrappyCircles();
+  CheckIntersectionsBetweenTrappyCircles_();
 
   if (manager_->GetTrappyCircles().empty()) return;
 
@@ -118,7 +118,7 @@ void PlotArea::CheckTrappyCircles() {
   }
 }
 
-void PlotArea::CheckTrappyLines() {
+void PlotArea::CheckTrappyLines_() {
   auto l = manager_->GetTrappyLinesPtrs().size();
   auto n = manager_->GetTargetsPtrs().size() + amount_of_robots_ - 1;
   if (l == 0) return;
@@ -128,7 +128,7 @@ void PlotArea::CheckTrappyLines() {
     throw std::invalid_argument("There are too many TrappyLines here!");
 }
 
-void PlotArea::CheckTargets() {
+void PlotArea::CheckTargets_() {
   if (manager_->GetTargetsPtrs().size() > 30) {
     std::string text = "There are too many Targets: ";
     text += std::to_string(manager_->GetTargetsPtrs().size());
@@ -138,10 +138,10 @@ void PlotArea::CheckTargets() {
   }
 }
 
-void PlotArea::CheckHills() {
+void PlotArea::CheckHills_() {
   for (const auto& hill : manager_->GetHills()) {
     // Проверка на пересечения с другими Hill
-    CheckIntersectionsBetweenHills();
+    CheckIntersectionsBetweenHills_();
 
     // Проверка на выпуклость многоугольника
     // Определяем знак векторного произведения

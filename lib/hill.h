@@ -20,7 +20,7 @@ class Hill : public JSONable {
    * @param points: список точек
    */
   Hill(const std::vector<Point>& points) : vertices_{points} {
-    CheckErrorValues();
+    CheckErrorValues_();
   }
 
   Hill(const Hill&) = default;
@@ -47,7 +47,7 @@ class Hill : public JSONable {
    * @throw std::invalid_argument: если одна из коорд. вершин превышает
    * максимально допустимое значение
    */
-  void CheckErrorValues() const override;
+  void CheckErrorValues_() const override;
 
   std::vector<Point> vertices_;
 };

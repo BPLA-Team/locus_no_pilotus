@@ -9,7 +9,7 @@ using lib::TrappyLine;
 
 namespace math {
 
-void TrajectoryCalculator::CalculateTrajectory() {
+void TrajectoryCalculator::CalculateTrajectory_() {
   // Матрица смежности контрольных точек
   std::vector<std::vector<double>> matrix(targets_.size());
   for (auto& elem : matrix) elem.resize(targets_.size());

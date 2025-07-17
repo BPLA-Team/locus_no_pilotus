@@ -45,7 +45,7 @@ void Hill::SetJsonInfo(const QJsonObject& hill_obj) {
     throw std::invalid_argument("Invalid file format: incorrect id in 'Hill'!");
   SetId(id);
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 bool Hill::IsChanged(const QJsonObject& hill_obj) const {
@@ -67,7 +67,7 @@ bool Hill::operator==(const Hill& hill) const {
   return true;
 }
 
-void Hill::CheckErrorValues() const {
+void Hill::CheckErrorValues_() const {
   for (const auto& vert : vertices_)
     if (vert.x > max_coord || vert.y > max_coord)
       throw std::invalid_argument("Exceeding the maximum permissible values!");

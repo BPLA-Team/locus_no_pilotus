@@ -38,7 +38,7 @@ class PlotArea {
 
  private:
   /// @brief Расчет вектора сегментов по заданным объектам на полотне
-  void CalculateTrajectory();
+  void CalculateTrajectory_();
 
   // i love unique_ptr's, i love logic schemes
   std::unique_ptr<QCustomPlot> plot_;
@@ -49,12 +49,13 @@ class PlotArea {
 
   unsigned short amount_of_robots_ = 1;
 
-  void CheckHills();
-  void CheckTrappyCircles();
-  void CheckTrappyLines();
-  void CheckTargets();
-  void CheckIntersectionsBetweenTrappyCircles();
-  void CheckIntersectionsBetweenHills();
+  void CheckHills_();
+  void CheckTrappyCircles_();
+  void CheckTrappyLines_();
+  void CheckTargets_();
+
+  void CheckIntersectionsBetweenTrappyCircles_();
+  void CheckIntersectionsBetweenHills_();
 };
 
 }  // namespace data_tools

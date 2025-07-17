@@ -9,7 +9,7 @@ AddHillForm::AddHillForm(QWidget* parent)
   ui->setupUi(this);
 
   // на начальный момент на окне находится 3 поля ввода
-  AddNewInputFields(3);
+  AddNewInputFields_(3);
 }
 
 AddHillForm::~AddHillForm() { delete ui; }
@@ -44,9 +44,9 @@ void AddHillForm::on_clearPushButton_clicked() {
   }
 }
 
-void AddHillForm::on_newPushButton_clicked() { AddNewInputFields(); }
+void AddHillForm::on_newPushButton_clicked() { AddNewInputFields_(); }
 
-void AddHillForm::AddNewInputFields(size_t amount) {
+void AddHillForm::AddNewInputFields_(size_t amount) {
   // передвигаем кнопки в конец
   ui->gridLayout->removeItem(ui->buttonsLayout);
   ui->gridLayout->addItem(

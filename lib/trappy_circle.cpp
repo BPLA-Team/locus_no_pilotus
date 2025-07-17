@@ -12,7 +12,7 @@ TrappyCircle::TrappyCircle(Point center, double radius)
     throw std::invalid_argument(
         "TrappyCircles cannot have of negative radius!");
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 QJsonObject TrappyCircle::GetJsonInfo() const {
@@ -48,7 +48,7 @@ void TrappyCircle::SetJsonInfo(const QJsonObject& trappy_circle_obj) {
         "Invalid file format: incorrect id in 'Trappy_Circle'!");
   SetId(id);
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 bool TrappyCircle::IsChanged(const QJsonObject& trappy_circle_obj) const {
@@ -63,7 +63,7 @@ bool TrappyCircle::operator==(const TrappyCircle& tr_circle) const {
          abs(radius_ - tr_circle.GetRadius()) < 10.E-7;
 }
 
-void TrappyCircle::CheckErrorValues() const {
+void TrappyCircle::CheckErrorValues_() const {
   if (center_.x > max_coord || center_.y > max_coord || radius_ > max_coord)
     throw std::invalid_argument("Exceeding the maximum permissible values!");
 }

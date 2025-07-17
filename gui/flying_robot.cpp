@@ -11,14 +11,14 @@ void FlyingRobot::SetTrajectory(Trajectory* trj) {
   index_of_segment_ = 0;
 
   if (trajectory_->Segments()[0].IsArc())
-    UpdateCircleFields();
+    UpdateCircleFields_();
   else
-    UpdateLineFields();
+    UpdateLineFields_();
 }
 
-void FlyingRobot::SetNewPositionOnLine() {
+void FlyingRobot::SetNewPositionOnLine_() {
   if (count_of_partitions_ == 0) {
-    UpdateSegment();
+    UpdateSegment_();
   } else {
     count_of_partitions_--;
 
@@ -29,9 +29,9 @@ void FlyingRobot::SetNewPositionOnLine() {
   }
 }
 
-void FlyingRobot::SetNewPositionOnCircle() {
+void FlyingRobot::SetNewPositionOnCircle_() {
   if (count_of_partitions_ == 0)
-    UpdateSegment();
+    UpdateSegment_();
   else {
     count_of_partitions_--;
 
@@ -49,7 +49,7 @@ void FlyingRobot::SetNewPositionOnCircle() {
   }
 }
 
-void FlyingRobot::UpdateSegment() {
+void FlyingRobot::UpdateSegment_() {
   index_of_segment_++;
 
   if (index_of_segment_ == trajectory_->Segments().size())
@@ -58,12 +58,12 @@ void FlyingRobot::UpdateSegment() {
   curr_point_ = trajectory_->Segments()[index_of_segment_].Start();
 
   if (trajectory_->Segments()[index_of_segment_].IsArc())
-    UpdateCircleFields();
+    UpdateCircleFields_();
   else
-    UpdateLineFields();
+    UpdateLineFields_();
 }
 
-void FlyingRobot::UpdateLineFields() {
+void FlyingRobot::UpdateLineFields_() {
   lib::Point p = trajectory_->Segments()[index_of_segment_].End() -
                  trajectory_->Segments()[index_of_segment_].Start();
   double R = sqrt(p.x * p.x + p.y * p.y);
@@ -92,7 +92,7 @@ void FlyingRobot::UpdateLineFields() {
   sin_of_line_ = p.y / R;
 }
 
-void FlyingRobot::UpdateCircleFields() {
+void FlyingRobot::UpdateCircleFields_() {
   auto angles = trajectory_->Segments()[index_of_segment_].ToAnglesOnCircle();
 
   double len_sector = trajectory_->Segments()[index_of_segment_].Radius() *
@@ -137,9 +137,9 @@ void FlyingRobot::Draw(QCustomPlot* plot) {
 
 void FlyingRobot::ReDraw(QCustomPlot* plot) {
   if (trajectory_->Segments()[index_of_segment_].IsArc())
-    SetNewPositionOnCircle();
+    SetNewPositionOnCircle_();
   else
-    SetNewPositionOnLine();
+    SetNewPositionOnLine_();
 
   graph_->setData({curr_point_.x}, {curr_point_.y});
 

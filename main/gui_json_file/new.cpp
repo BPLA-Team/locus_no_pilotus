@@ -22,7 +22,7 @@ void GuiJsonFile::SetUntitledFile() {
   }
 }
 
-QJsonObject GuiJsonFile::LoadJson() const {
+QJsonObject GuiJsonFile::LoadJson_() const {
   QString json_text = file_->readAll();
   QJsonDocument json_file = QJsonDocument::fromJson(json_text.toUtf8());
   return json_file.object();
@@ -30,7 +30,7 @@ QJsonObject GuiJsonFile::LoadJson() const {
 
 bool GuiJsonFile::IsChanged(data_tools::DataManager* manager) const {
   file_->open(QIODevice::ReadOnly | QFile::Text);
-  QJsonObject root = LoadJson();
+  QJsonObject root = LoadJson_();
 
   QJsonArray json_targets = root["Targets"].toArray();
   QJsonArray json_trappy_circles = root["Trappy_Circles"].toArray();

@@ -45,7 +45,7 @@ class TrajectoryCalculator {
       polys_.push_back(PolygonObstacle(vertexes));
     }
 
-    CalculateTrajectory();
+    CalculateTrajectory_();
   }
 
   /// @brief Возвращает траекторию
@@ -70,18 +70,8 @@ class TrajectoryCalculator {
   // Траектория облета контрольных точек
   std::vector<lib::Segment> trajectory_;
 
-  /**
-   * @brief Подсчет части траектории
-   * @param optimal_way: порядок обхода точек
-   * @param nodes: вершины графа
-   * @return часть траектории
-   */
-  std::vector<lib::Segment> GetTrajectoryPart(
-      std::vector<std::size_t> optimal_way,
-      const std::vector<std::shared_ptr<PathWayNode>>& nodes);
-
   /// @brief Рассчитывает траекторию
-  void CalculateTrajectory();
+  void CalculateTrajectory_();
 };
 
 }  // namespace math

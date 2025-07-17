@@ -6,7 +6,7 @@
 
 namespace math {
 
-void DijkstrasAlgorithm::Calculate_Min_Path() {
+void DijkstrasAlgorithm::CalculateMinPath_() {
   while (graphs_vertex_[second_point_] > min_length_) {
     std::shared_ptr<PathWayNode> min_len_key;
     for (auto& elem : graphs_vertex_)

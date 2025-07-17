@@ -23,7 +23,7 @@ class TravellingSalesmansProblem {
 
   // Возвращает оптимальный маршрут для данной задачи
   inline std::vector<std::size_t> GetTrajectory() {
-    return CalculateTrajectory();
+    return CalculateTrajectory_();
   }
 
  private:
@@ -45,7 +45,7 @@ class TravellingSalesmansProblem {
    * @brief Заменяет вершину графа в path_stack_ на её детей,
    * без нарушения порядка
    */
-  void ExpandStack();
+  void ExpandStack_();
 
   /**
    * @brief Удаляет ребро из матрицы смежности
@@ -54,21 +54,21 @@ class TravellingSalesmansProblem {
    * @param end_num: конец ребра
    * @return AdjacencyMatrix: матрица с удалённым ребром
    */
-  AdjacencyMatrix& DeleteEdge(AdjacencyMatrix& matrix, std::size_t start_num,
-                              std::size_t end_num);
+  AdjacencyMatrix& DeleteEdge_(AdjacencyMatrix& matrix, std::size_t start_num,
+                               std::size_t end_num);
 
   /**
    * @brief Находит место для вставки вершины для соблюдения порядка
    * @param eval: нижняя оценка матрицы
    * @return std::size_t: индекс вставки вершины
    */
-  std::size_t FindIndex(double eval) const;
+  std::size_t FindIndex_(double eval) const;
 
   /**
    * @brief Замыкает Гамильтонов цикл обхода контрольных точек
    * @param node: вершина графа поиска оптимального пути
    */
-  void CompleteEdgePath(std::shared_ptr<TSPNode> node);
+  void CompleteEdgePath_(std::shared_ptr<TSPNode> node);
 
   /**
    * @brief Переводит ребра, содержащихся в пути
@@ -76,13 +76,13 @@ class TravellingSalesmansProblem {
    * @return std::vector<std::size_t>: последовательность
    * обхода контрольных точек
    */
-  std::vector<std::size_t> ConvertToVertexPath();
+  std::vector<std::size_t> ConvertToVertexPath_();
 
   /**
    * @brief Просчитывает оптимальную маршрут
    * @return std::vector<std::size_t>: порядок следования вершин
    */
-  std::vector<std::size_t> CalculateTrajectory();
+  std::vector<std::size_t> CalculateTrajectory_();
 };
 
 }  // namespace math

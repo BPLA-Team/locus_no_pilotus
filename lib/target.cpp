@@ -30,7 +30,7 @@ void Target::SetJsonInfo(const QJsonObject& target_obj) {
         "Invalid file format: incorrect id in 'Target'!");
   SetId(id);
 
-  CheckErrorValues();
+  CheckErrorValues_();
 }
 
 bool Target::IsChanged(const QJsonObject& target_obj) const {
@@ -43,7 +43,7 @@ bool Target::operator==(const Target& target) const {
   return p_ == target.GetPoint();
 }
 
-void Target::CheckErrorValues() const {
+void Target::CheckErrorValues_() const {
   if (p_.x > max_coord || p_.y > max_coord)
     throw std::invalid_argument("Exceeding the maximum permissible values!");
 }

@@ -38,5 +38,5 @@ class GuiJsonFile {
  private:
   QFile* file_{new QFile};
 
-  QJsonObject LoadJson() const;
+  QJsonObject LoadJson_() const;
 };

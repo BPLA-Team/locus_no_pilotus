@@ -29,7 +29,7 @@ class TablesConnection : public QObject {
     hills_table_.reset(hills_info);
     tr_circles_table_.reset(tr_circles_info);
     tr_lines_table_.reset(tr_lines_info);
-    UpdateTablesConnections();
+    UpdateTablesConnections_();
   }
 
   /**
@@ -47,7 +47,7 @@ class TablesConnection : public QObject {
     hills_remove_button_.reset(hills_remove_button);
     tr_circles_remove_button_.reset(tr_circles_remove_button);
     tr_lines_remove_button_.reset(tr_lines_remove_button);
-    UpdateRemoveButtonConnections();
+    UpdateRemoveButtonConnections_();
   }
 
   /// @brief Обновляет данные в таблицах всех объектов
@@ -113,30 +113,31 @@ class TablesConnection : public QObject {
    * @brief Обновляет значения таблицы с Targets
    * @param targets: вектор новых значений
    */
-  void UpdateTable(const std::vector<gui::Target>& targets);
+  void UpdateTable_(const std::vector<gui::Target>& targets);
 
   /**
    * @brief Обновляет значения таблицы с Hills
    * @param hills: вектор новых значений
    */
-  void UpdateTable(const std::vector<gui::Hill>& hills);
+  void UpdateTable_(const std::vector<gui::Hill>& hills);
 
   /**
    * @brief Обновляет значения таблицы с TrappyLines
    * @param trappy_lines: вектор новых значений
    */
-  void UpdateTable(const std::vector<gui::TrappyLine>& trappy_lines);
+  void UpdateTable_(const std::vector<gui::TrappyLine>& trappy_lines);
 
   /**
    * @brief Обновляет значения таблицы с TrappyCircles
    * @param trappy_circles: вектор новых значений
    */
-  void UpdateTable(const std::vector<gui::TrappyCircle>& trappy_circles);
+  void UpdateTable_(const std::vector<gui::TrappyCircle>& trappy_circles);
 
   int selected_column_{INT_MAX};
-  void UpdateTablesConnections();
-  void DisableTablesConnections();
-  void UpdateRemoveButtonConnections();
+
+  void UpdateTablesConnections_();
+  void DisableTablesConnections_();
+  void UpdateRemoveButtonConnections_();
 
   std::unique_ptr<QTableWidget> targets_table_{nullptr};
   std::unique_ptr<QTableWidget> hills_table_{nullptr};
