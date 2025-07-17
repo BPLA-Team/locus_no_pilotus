@@ -192,7 +192,7 @@ void MainWindow::moveRobot() { area_->GetRobot()->ReDraw(ui->plot); }
 
 void MainWindow::on_actionHelp_triggered() {
   QDesktopServices::openUrl(
-      QUrl("https://umbrellaleaf5.github.io/locus_no_pilotus/index.html"));
+      QUrl("https://bpla-team.github.io/locus_no_pilotus/index.html"));
 }
 
 void MainWindow::on_robotsApplyAmountPushButton_clicked() {
