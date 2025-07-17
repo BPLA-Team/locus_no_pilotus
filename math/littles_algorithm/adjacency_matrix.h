@@ -130,20 +130,20 @@ class AdjacencyMatrix {
    * @param index: номер строки/столбца
    * @return Minimums: 2 найденных минимума
    */
-  Minimums FindTwoMinimums(Mins type, std::size_t index) const;
+  Minimums FindTwoMinimums_(Mins type, std::size_t index) const;
 
   /**
    * @brief Находит нижнюю оценку для матрицы
    * @return double: нижняя оценку матрицы
    */
-  double BottomLineEvaluation();
+  double BottomLineEvaluation_();
 
   /**
    * @brief Находит позицию нуля с наибольшей степенью
    * @return std::pair<std::size_t, std::size_t>: позицию нуля с наибольшей
    * степенью
    */
-  std::pair<std::size_t, std::size_t> HighestPowerOfZero() const;
+  std::pair<std::size_t, std::size_t> HighestPowerOfZero_() const;
 };
 
 }  // namespace math

@@ -63,6 +63,7 @@ class TrappyCircle : public Drawable {
  private:
   lib::TrappyCircle data_;
   QColor color_;
+
   QCPItemEllipse* ellipse_{nullptr};
 };
 

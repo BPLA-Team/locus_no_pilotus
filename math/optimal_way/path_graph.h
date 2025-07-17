@@ -107,7 +107,7 @@ class DijkstrasAlgorithm {
         min_length_{0} {
     graphs_vertex_[first_point_] = 0;
     graphs_vertex_[second_point_] = inf;
-    Calculate_Min_Path();
+    CalculateMinPath_();
   }
 
   // Возвращает длину кратчайшего пути
@@ -138,7 +138,7 @@ class DijkstrasAlgorithm {
   /**
    * @brief Определяет длину кратчайшего пути из start_ в end_
    */
-  void Calculate_Min_Path();
+  void CalculateMinPath_();
 };
 
 }  // namespace math

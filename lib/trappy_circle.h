@@ -26,12 +26,12 @@ class TrappyCircle : public JSONable {
 
   void SetCenter(const Point& center) {
     center_ = center;
-    CheckErrorValues();
+    CheckErrorValues_();
   }
 
   void SetRadius(double r) {
     radius_ = r;
-    CheckErrorValues();
+    CheckErrorValues_();
   }
 
   bool operator==(const TrappyCircle&) const;
@@ -44,7 +44,7 @@ class TrappyCircle : public JSONable {
    * @throw std::invalid_argument: если радиус превышает максимально допустимое
    * значение
    */
-  void CheckErrorValues() const override;
+  void CheckErrorValues_() const override;
 
   Point center_;
   double radius_;

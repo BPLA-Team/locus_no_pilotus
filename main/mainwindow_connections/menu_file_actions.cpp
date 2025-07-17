@@ -5,7 +5,7 @@
  * @brief Вызов окна, которое сообщает об изменениях в файле
  * @return true: если окно было закрыто
  */
-bool MainWindow::OpenMessageWindow() {
+bool MainWindow::OpenMessageWindow_() {
   QString text =
       "Do you want save changes in file " + json_file_.GetFileName() + "?";
   int ret = QMessageBox::question(
@@ -33,18 +33,18 @@ bool MainWindow::OpenMessageWindow() {
 
 /// @brief Проверяет при закрытии приложения, есть ли изменения в текущем файле
 void MainWindow::closeEvent(QCloseEvent* event) {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   bool is_closed = false;
 
   if (json_file_.IsExistsFile() && json_file_.IsChanged(manager_.get()))
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
 
   else if (!json_file_.IsExistsFile() && (manager_->GetTargets().size() +
                                           manager_->GetTrappyCircles().size() +
                                           manager_->GetTrappyLines().size() +
                                           manager_->GetHills().size()) != 0) {
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
   }
 
   if (is_closed)
@@ -55,18 +55,18 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 
 /// @brief Кнопка "New"
 void MainWindow::on_newFileAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   bool is_closed = false;
 
   if (json_file_.IsExistsFile() && json_file_.IsChanged(manager_.get()))
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
 
   else if (!json_file_.IsExistsFile() && (manager_->GetTargets().size() +
                                           manager_->GetTrappyCircles().size() +
                                           manager_->GetTrappyLines().size() +
                                           manager_->GetHills().size()) != 0)
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
 
   if (!is_closed) {
     manager_->Clear();
@@ -78,18 +78,18 @@ void MainWindow::on_newFileAction_triggered() {
 
 /// @brief Кнопка "Open"
 void MainWindow::on_openFileAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   bool is_closed = false;
 
   if (json_file_.IsExistsFile() && json_file_.IsChanged(manager_.get()))
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
 
   else if (!json_file_.IsExistsFile() && (manager_->GetTargets().size() +
                                           manager_->GetTrappyCircles().size() +
                                           manager_->GetTrappyLines().size() +
                                           manager_->GetHills().size()) != 0)
-    is_closed = OpenMessageWindow();
+    is_closed = OpenMessageWindow_();
 
   if (is_closed) return;
 
@@ -122,7 +122,7 @@ void MainWindow::on_openFileAction_triggered() {
  * @return true: закрыто окно сохранения файла
  */
 bool MainWindow::on_saveFileAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   if (!json_file_.IsExistsFile())
     return on_saveAsFileAction_triggered();
@@ -137,7 +137,7 @@ bool MainWindow::on_saveFileAction_triggered() {
  * @return true: закрыто окно сохранения файла
  */
 bool MainWindow::on_saveAsFileAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   QString file_name = QFileDialog::getSaveFileName(
       this, tr("Save as"), json_file_.GetAbsolutePath(), tr("File (*.json)"));

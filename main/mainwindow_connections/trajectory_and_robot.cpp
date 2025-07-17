@@ -1,7 +1,7 @@
 // header file:
 #include "main/mainwindow.h"
 
-void MainWindow::StopRobot() {
+void MainWindow::StopRobot_() {
   if (is_robot_flying_) {
     disconnect(timer_, &QTimer::timeout, this, &MainWindow::moveRobot);
     timer_->stop();
@@ -17,7 +17,7 @@ void MainWindow::StopRobot() {
   }
 }
 
-void MainWindow::FlyRobot() {
+void MainWindow::FlyRobot_() {
   if (!is_robot_flying_) {
     connect(timer_, &QTimer::timeout, this, &MainWindow::moveRobot);
     timer_->start(5);
@@ -36,7 +36,7 @@ void MainWindow::FlyRobot() {
   }
 }
 
-void MainWindow::CalcTrajectory() {
+void MainWindow::CalcTrajectory_() {
   is_drown_trajectory_ = true;
 
   area_->ReDrawTrajectory();
@@ -47,7 +47,7 @@ void MainWindow::CalcTrajectory() {
     ui->flyRobotPushButton->setEnabled(true);
 }
 
-void MainWindow::DeCalcTrajectory() {
+void MainWindow::DeCalcTrajectory_() {
   is_drown_trajectory_ = false;
 
   area_->ClearTrajectory();
@@ -56,24 +56,24 @@ void MainWindow::DeCalcTrajectory() {
 
   ui->flyRobotPushButton->setEnabled(false);
 
-  if (is_robot_flying_) StopRobot();
+  if (is_robot_flying_) StopRobot_();
 }
 
 void MainWindow::on_calcTrajectoryPushButton_clicked() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
   manager_->RemoveAllDuplicates();
   t_connection_->UpdateTables();
   area_->ReDraw();
 
-  CalcTrajectory();
+  CalcTrajectory_();
 }
 
 void MainWindow::on_flyRobotPushButton_clicked() {
   try {
     if (is_robot_flying_)
-      StopRobot();
+      StopRobot_();
     else
-      FlyRobot();
+      FlyRobot_();
 
   } catch (const std::exception& e) {
     QMessageBox::warning(this, "Cannot add Robot!", e.what());

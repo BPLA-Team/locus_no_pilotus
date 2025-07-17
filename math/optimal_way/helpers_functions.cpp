@@ -3,6 +3,8 @@
 
 // std libs:
 #include <algorithm>
+#include <climits>
+#include <cmath>
 
 namespace math {
 
@@ -191,7 +193,7 @@ std::vector<LinearFunction> TangentsBetween(const CircleObstacle& circle1,
 
   for (auto n1 : {-1, 1})
     for (auto n2 : {-1, 1}) {
-      bool is_unique = !(_isnan(FindTangent(r_0 * n1, r_1 * n2).a_coef));
+      bool is_unique = !(std::isnan(FindTangent(r_0 * n1, r_1 * n2).a_coef));
       for (std::size_t i = 0; i < tangents.size(); ++i)
         if (tangents[i] == FindTangent(r_0 * n1, r_1 * n2)) is_unique = false;
       if (is_unique) tangents.push_back(FindTangent(r_0 * n1, r_1 * n2));
@@ -211,7 +213,7 @@ std::vector<LinearFunction> TangentsBetween(const PolygonObstacle& polygon,
         LinearFunction line(vertex, tang_pnt);
         if ((!AreThereIntersections(polygon, line)) &&
             (!AreThereIntersections(obstacle, line))) {
-          bool is_unique = !_isnan(line.a_coef);
+          bool is_unique = !std::isnan(line.a_coef);
           for (std::size_t i = 0; i < tangents.size(); ++i)
             if (tangents[i] == line) is_unique = false;
           if (is_unique) tangents.push_back(line);
@@ -270,7 +272,7 @@ bool AreThereIntersections(const PolygonObstacle& poly_obst, const Point& pnt1,
         (v_line.Substitute(pnt1) * v_line.Substitute(pnt2) < -precision))
       return true;
   }
-  std::size_t prev = ULONG_LONG_MAX;
+  std::size_t prev = ULLONG_MAX;
   for (std::size_t i = 0; i < vertexes.size(); ++i)
     if (std::abs(line.Substitute(vertexes[i])) <= precision) {
       if ((prev + 1 == 0) || (i - prev == 1) ||
@@ -291,7 +293,7 @@ bool AreThereIntersections(const PolygonObstacle& poly_obst,
          -precision))
       return true;
 
-  std::size_t prev = ULONG_LONG_MAX;
+  std::size_t prev = ULLONG_MAX;
   for (std::size_t i = 0; i < vertexes.size(); ++i)
     if (std::abs(line.Substitute(vertexes[i])) <= precision) {
       if ((prev + 1 == 0) || (i - prev == 1) ||

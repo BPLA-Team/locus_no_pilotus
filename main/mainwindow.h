@@ -121,13 +121,13 @@ class MainWindow : public QMainWindow {
   bool is_robot_flying_ = false;
   bool is_drown_trajectory_ = false;
 
-  bool OpenMessageWindow();
-  gui::ObjectType GetObjType() const;
-  void DeleteLastAddedObject();
+  bool OpenMessageWindow_();
+  gui::ObjectType GetObjType_() const;
+  void DeleteLastAddedObject_();
 
-  void CalcTrajectory();
-  void DeCalcTrajectory();
+  void CalcTrajectory_();
+  void DeCalcTrajectory_();
 
-  void StopRobot();
-  void FlyRobot();
+  void StopRobot_();
+  void FlyRobot_();
 };

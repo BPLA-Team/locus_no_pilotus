@@ -28,12 +28,12 @@ void PlotArea::ReDrawTrajectory() {
   ReDraw();
 
   try {
-    CheckTrappyCircles();
-    CheckHills();
-    CheckTrappyLines();
-    CheckTargets();
+    CheckTrappyCircles_();
+    CheckHills_();
+    CheckTrappyLines_();
+    CheckTargets_();
 
-    CalculateTrajectory();
+    CalculateTrajectory_();
     trajectory_->Draw(plot_.get());
     plot_->replot();
   } catch (const std::exception& e) {
@@ -41,7 +41,7 @@ void PlotArea::ReDrawTrajectory() {
   }
 }
 
-void PlotArea::CalculateTrajectory() {
+void PlotArea::CalculateTrajectory_() {
   auto lib_targets = std::vector<lib::Target>(manager_->GetTargets().size());
   for (size_t i = 0; i < lib_targets.size(); i++)
     lib_targets[i] = manager_->GetTargets()[i].GetData();

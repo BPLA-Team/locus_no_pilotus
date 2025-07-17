@@ -46,8 +46,8 @@ void MainWindow::DisconnectObject(gui::ObjectType obj_type) {
  * причем его добавление не закончилось. Она должна вызывается везде, где
  * происходит взаимодействие пользователя с кнопками класса "MainWindow"
  */
-void MainWindow::DeleteLastAddedObject() {
-  DisconnectObject(GetObjType());
+void MainWindow::DeleteLastAddedObject_() {
+  DisconnectObject(GetObjType_());
   switch (what_obj_addition_) {
     case WhatObjectAddition::TrCircle: {
       size_t last = manager_->GetTrappyCircles().size() - 1;
@@ -72,7 +72,7 @@ void MainWindow::DeleteLastAddedObject() {
   }
 
   area_->ReDraw();
-  DeCalcTrajectory();
+  DeCalcTrajectory_();
 
   what_obj_addition_ = WhatObjectAddition::Nothing;
 }
@@ -81,7 +81,7 @@ void MainWindow::keyPressEvent(QKeyEvent* key_event) {
   if (key_event->key() == Qt::Key_Escape) {
     // Проверка на то, что пользователь уже начал создавать объект,
     // поэтому при нажатии Esc мы должны удалять последний добавленный объект
-    DeleteLastAddedObject();
+    DeleteLastAddedObject_();
   }
 }
 
@@ -292,7 +292,7 @@ void MainWindow::mousePressDeleteLastVertice(QMouseEvent* mouse_event) {
             manager_->GetHills()[last].GetVertices()[0];
 
       } else
-        DeleteLastAddedObject();
+        DeleteLastAddedObject_();
     }
 
     area_->ReDraw();

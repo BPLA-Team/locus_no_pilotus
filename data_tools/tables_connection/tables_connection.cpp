@@ -10,8 +10,8 @@ void TablesConnection::Setup(DataManager* manager, PlotArea* area) {
 
 // MARK: U.T. by Targets
 
-void TablesConnection::UpdateTable(const std::vector<gui::Target>& targets) {
-  DisableTablesConnections();
+void TablesConnection::UpdateTable_(const std::vector<gui::Target>& targets) {
+  DisableTablesConnections_();
 
   if (targets.empty()) {
     targets_table_->setColumnCount(0);
@@ -46,13 +46,13 @@ void TablesConnection::UpdateTable(const std::vector<gui::Target>& targets) {
   }
 
   targets_table_->update();
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 // MARK: U.T. by Hills
 
-void TablesConnection::UpdateTable(const std::vector<gui::Hill>& hills) {
-  DisableTablesConnections();
+void TablesConnection::UpdateTable_(const std::vector<gui::Hill>& hills) {
+  DisableTablesConnections_();
 
   if (hills.empty()) {
     hills_table_->setColumnCount(0);
@@ -110,14 +110,14 @@ void TablesConnection::UpdateTable(const std::vector<gui::Hill>& hills) {
   }
 
   hills_table_->update();
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 // MARK: U.T. by Tr. Lines
 
-void TablesConnection::UpdateTable(
+void TablesConnection::UpdateTable_(
     const std::vector<gui::TrappyLine>& trappy_lines) {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   if (trappy_lines.empty()) {
     tr_lines_table_->setColumnCount(0);
@@ -176,14 +176,14 @@ void TablesConnection::UpdateTable(
   }
 
   tr_lines_table_->update();
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 // MARK: U.T. by Tr. Circles
 
-void TablesConnection::UpdateTable(
+void TablesConnection::UpdateTable_(
     const std::vector<gui::TrappyCircle>& trappy_circles) {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   if (trappy_circles.empty()) {
     tr_circles_table_->setColumnCount(0);
@@ -226,25 +226,25 @@ void TablesConnection::UpdateTable(
   }
 
   tr_circles_table_->update();
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 void TablesConnection::UpdateTable(gui::ObjectType obj_type) {
   switch (obj_type) {
     case gui::ObjectType::Targets:
-      UpdateTable(manager_->GetTargets());
+      UpdateTable_(manager_->GetTargets());
       break;
 
     case gui::ObjectType::Hills:
-      UpdateTable(manager_->GetHills());
+      UpdateTable_(manager_->GetHills());
       break;
 
     case gui::ObjectType::TrappyCircles:
-      UpdateTable(manager_->GetTrappyCircles());
+      UpdateTable_(manager_->GetTrappyCircles());
       break;
 
     case gui::ObjectType::TrappyLines:
-      UpdateTable(manager_->GetTrappyLines());
+      UpdateTable_(manager_->GetTrappyLines());
       break;
   }
 }
@@ -255,7 +255,7 @@ void TablesConnection::UpdateTables() {
   UpdateTable(gui::ObjectType::TrappyCircles);
   UpdateTable(gui::ObjectType::TrappyLines);
 
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 // TODO: переписать так, чтобы оно меняло конкретное поле, а не целую точку
@@ -401,49 +401,49 @@ void TablesConnection::TrappyLinesItemChanged(int row, int column) {
 // MARK: Remove Items
 
 void TablesConnection::RemoveTargetItem() {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   manager_->Remove(gui::ObjectType::Targets, selected_column_);
   area_->ReDraw();
   UpdateTable(gui::ObjectType::Targets);
   UpdateTable(gui::ObjectType::TrappyLines);
 
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 void TablesConnection::RemoveHillItem() {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   manager_->Remove(gui::ObjectType::Hills, selected_column_);
   area_->ReDraw();
   UpdateTable(gui::ObjectType::Hills);
 
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 void TablesConnection::RemoveTrappyCircleItem() {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   manager_->Remove(gui::ObjectType::TrappyCircles, selected_column_);
   area_->ReDraw();
   UpdateTable(gui::ObjectType::TrappyCircles);
 
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 void TablesConnection::RemoveTrappyLineItem() {
-  DisableTablesConnections();
+  DisableTablesConnections_();
 
   manager_->Remove(gui::ObjectType::TrappyLines, selected_column_);
   area_->ReDraw();
   UpdateTable(gui::ObjectType::TrappyLines);
 
-  UpdateTablesConnections();
+  UpdateTablesConnections_();
 }
 
 // MARK: Update Connections
 
-void TablesConnection::UpdateTablesConnections() {
+void TablesConnection::UpdateTablesConnections_() {
   QObject::connect(targets_table_.get(), &QTableWidget::cellChanged, this,
                    &TablesConnection::TargetsItemChanged);
 
@@ -457,7 +457,7 @@ void TablesConnection::UpdateTablesConnections() {
                    &TablesConnection::TrappyLinesItemChanged);
 }
 
-void TablesConnection::DisableTablesConnections() {
+void TablesConnection::DisableTablesConnections_() {
   QObject::disconnect(targets_table_.get(), &QTableWidget::cellChanged, this,
                       &TablesConnection::TargetsItemChanged);
 
@@ -471,7 +471,7 @@ void TablesConnection::DisableTablesConnections() {
                       &TablesConnection::TrappyLinesItemChanged);
 }
 
-void TablesConnection::UpdateRemoveButtonConnections() {
+void TablesConnection::UpdateRemoveButtonConnections_() {
   // активируем кнопки при выборе любой клетки
   QObject::connect(targets_table_.get(), &QTableWidget::cellClicked, this,
                    &TablesConnection::EnableRemoveTargetButton);

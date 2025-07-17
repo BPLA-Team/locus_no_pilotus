@@ -51,7 +51,7 @@ class AddHillForm : public QDialog {
    * @brief Добавляет определенное количество новых полей ввода на форму
    * @param amount: кол-ло новых полей ввода точки
    */
-  void AddNewInputFields(size_t amount = 1);
+  void AddNewInputFields_(size_t amount = 1);
 
   Ui::AddHillForm* ui;
   std::vector<std::unique_ptr<QWidget>> point_layouts_widgets_;

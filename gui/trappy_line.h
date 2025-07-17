@@ -16,11 +16,11 @@ class TrappyLine : public Drawable {
   TrappyLine() = default;
 
   TrappyLine(gui::Target* first_target, gui::Target* second_target) {
-    UpdateData(first_target, second_target);
+    UpdateData_(first_target, second_target);
   }
 
   TrappyLine(std::pair<gui::Target*, gui::Target*> targets) {
-    UpdateData(targets);
+    UpdateData_(targets);
   }
 
   TrappyLine(const lib::TrappyLine& data) : data_(data) {}
@@ -40,11 +40,11 @@ class TrappyLine : public Drawable {
   }
 
   void SetTargets(gui::Target* first_target, gui::Target* second_target) {
-    UpdateData(first_target, second_target);
+    UpdateData_(first_target, second_target);
   }
 
   void SetTargets(std::pair<gui::Target*, gui::Target*> targets) {
-    UpdateData(targets);
+    UpdateData_(targets);
   }
 
   const lib::TrappyLine& GetData() const { return data_; }
@@ -79,8 +79,8 @@ class TrappyLine : public Drawable {
   }
 
  private:
-  void UpdateData(gui::Target* first_target, gui::Target* second_target);
-  void UpdateData(std::pair<gui::Target*, gui::Target*> targets);
+  void UpdateData_(gui::Target* first_target, gui::Target* second_target);
+  void UpdateData_(std::pair<gui::Target*, gui::Target*> targets);
 
   lib::TrappyLine data_;
 

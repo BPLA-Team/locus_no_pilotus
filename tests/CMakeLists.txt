@@ -13,7 +13,7 @@ file(GLOB_RECURSE TEST_SOURCES "*.h" "*.cpp" "*.ui")
 include_directories(${PROJECT_DIR})
 
 # -----------------------------         Add executable         -----------------------------
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+if(6 GREATER_EQUAL 6)
   qt_add_executable(tests MANUAL_FINALIZATION ${TEST_SOURCES})
 else()
   add_executable(tests ${TEST_SOURCES})
@@ -22,10 +22,10 @@ endif()
 # -----------------------------     Include other libraries    -----------------------------
 # Qt libs:
 target_link_libraries(tests PUBLIC
-  Qt${QT_VERSION_MAJOR}::Core
-  Qt${QT_VERSION_MAJOR}::Gui
-  Qt${QT_VERSION_MAJOR}::Widgets
-  Qt${QT_VERSION_MAJOR}::PrintSupport
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Widgets
+  Qt6::PrintSupport
 )
 
 # Boost libs:

@@ -46,7 +46,7 @@ AdjacencyMatrix AdjacencyMatrix::Reducted() {
 AdjacencyMatrix::AdjacencyMatrix(const std::vector<std::vector<double>>& nums)
     : size_{nums.size()}, matrix_{nums}, min_numbers_(size_ + size_) {}
 
-Minimums AdjacencyMatrix::FindTwoMinimums(Mins type, std::size_t index) const {
+Minimums AdjacencyMatrix::FindTwoMinimums_(Mins type, std::size_t index) const {
   Minimums result;
   double first_min = inf;
   double second_min = inf;
@@ -88,11 +88,11 @@ Minimums AdjacencyMatrix::FindTwoMinimums(Mins type, std::size_t index) const {
   return result;
 }
 
-double AdjacencyMatrix::BottomLineEvaluation() {
+double AdjacencyMatrix::BottomLineEvaluation_() {
   reducted_matrix_ = matrix_;
   double mins_sum = 0;
   for (std::size_t i = 0; i < size_; ++i) {
-    Minimums twoMins = FindTwoMinimums(Mins::Rows, i);
+    Minimums twoMins = FindTwoMinimums_(Mins::Rows, i);
     double first_min = twoMins.first;
     double second_min = twoMins.second;
     for (std::size_t j = 0; j < size_; ++j) {
@@ -104,7 +104,7 @@ double AdjacencyMatrix::BottomLineEvaluation() {
   }
 
   for (std::size_t i = 0; i < size_; ++i) {
-    Minimums twoMins = FindTwoMinimums(Mins::Columns, i);
+    Minimums twoMins = FindTwoMinimums_(Mins::Columns, i);
     double first_min = twoMins.first;
     double second_min = twoMins.second;
     for (std::size_t j = 0; j < size_; ++j) {
@@ -120,7 +120,7 @@ double AdjacencyMatrix::BottomLineEvaluation() {
   return mins_sum;
 }
 
-std::pair<std::size_t, std::size_t> AdjacencyMatrix::HighestPowerOfZero()
+std::pair<std::size_t, std::size_t> AdjacencyMatrix::HighestPowerOfZero_()
     const {
   std::size_t row = 0, col = 0;
   double max = -1;
@@ -139,8 +139,8 @@ std::pair<std::size_t, std::size_t> AdjacencyMatrix::HighestPowerOfZero()
 }
 
 void AdjacencyMatrix::CalculateData() {
-  evaluation_ = BottomLineEvaluation();
-  selected_value_ = HighestPowerOfZero();
+  evaluation_ = BottomLineEvaluation_();
+  selected_value_ = HighestPowerOfZero_();
   selected_edge_ = std::make_pair(matrix_[selected_value_.first][size_],
                                   matrix_[size_][selected_value_.second]);
 }

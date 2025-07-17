@@ -42,7 +42,7 @@ class TrappyLine : public JSONable {
 
  private:
   /// @throw td::runtime_error: класс не содержит проверяемых данных
-  void CheckErrorValues() const override {
+  void CheckErrorValues_() const override {
     throw std::runtime_error("dev: no checkable error values in TrappyLines");
   }
 

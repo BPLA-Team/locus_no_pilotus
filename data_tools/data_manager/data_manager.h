@@ -23,7 +23,7 @@ class DataManager {
   // ----------------------   Target methods   ----------------------
 
   // for gui::Target
-  void Add(gui::Target* t);
+  void Add(gui::Target* target_ptr);
   void Add(std::vector<gui::Target*>);
   void Set(std::vector<gui::Target*>);
 
@@ -52,7 +52,7 @@ class DataManager {
   // ----------------------    Hill methods    ----------------------
 
   // for gui::Hill
-  void Add(gui::Hill* h);
+  void Add(gui::Hill* hill_ptr);
   void Add(std::vector<gui::Hill*>);
   void Set(std::vector<gui::Hill*>);
 
@@ -81,7 +81,7 @@ class DataManager {
   // ---------------------- TrappyCircle methods ----------------------
 
   // for gui::TrappyCircle
-  void Add(gui::TrappyCircle* tr_c);
+  void Add(gui::TrappyCircle* trappy_circle);
   void Add(std::vector<gui::TrappyCircle*>);
   void Set(std::vector<gui::TrappyCircle*>);
 
@@ -110,7 +110,7 @@ class DataManager {
   // ----------------------  TrappyLine methods  ----------------------
 
   // for gui::TrappyLine
-  void Add(gui::TrappyLine* tr_l);
+  void Add(gui::TrappyLine* trappy_line);
   void Add(std::vector<gui::TrappyLine*>);
   void Set(std::vector<gui::TrappyLine*>);
 
@@ -151,19 +151,19 @@ class DataManager {
    */
   bool RemoveAllDuplicates();
 
-  unsigned short GetMinId(gui::ObjectType obj_type);
-
  private:
   /**
    * @brief Проверяет данные в DataManager на валидность
    * @throw std::invalid_argument: если объектов какого-либо вектора > 10000
    */
-  void CheckErrorValues();
+  void CheckErrorValues_();
+
+  unsigned short GetMinId_(gui::ObjectType obj_type);
 
   std::vector<std::unique_ptr<gui::Hill>> hills_;
   std::vector<std::unique_ptr<gui::Target>> targets_;
-  std::vector<std::unique_ptr<gui::TrappyCircle>> tr_circles_;
-  std::vector<std::unique_ptr<gui::TrappyLine>> tr_lines_;
+  std::vector<std::unique_ptr<gui::TrappyCircle>> trappy_circles_;
+  std::vector<std::unique_ptr<gui::TrappyLine>> trappy_lines_;
 };
 
 }  // namespace data_tools

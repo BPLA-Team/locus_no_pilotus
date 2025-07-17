@@ -11,8 +11,8 @@ namespace lib {
  */
 class Target : public JSONable {
  public:
-  Target(double x, double y) : p_(x, y) { CheckErrorValues(); }
-  Target(const Point& p) : p_{p} { CheckErrorValues(); }
+  Target(double x, double y) : p_(x, y) { CheckErrorValues_(); }
+  Target(const Point& p) : p_{p} { CheckErrorValues_(); }
   Target() : p_(0, 0) {}
 
   Target(const Target&) = default;
@@ -30,12 +30,12 @@ class Target : public JSONable {
 
   void SetPoint(const Point& p) {
     p_ = p;
-    CheckErrorValues();
+    CheckErrorValues_();
   }
 
   void SetPoint(double x, double y) {
     p_ = Point(x, y);
-    CheckErrorValues();
+    CheckErrorValues_();
   }
 
   bool operator==(const Target&) const;
@@ -46,7 +46,7 @@ class Target : public JSONable {
    * @throw std::invalid_argument: если одна из коорд. точки превышает
    * максимально допустимое значение
    */
-  void CheckErrorValues() const override;
+  void CheckErrorValues_() const override;
 
   Point p_;
 };

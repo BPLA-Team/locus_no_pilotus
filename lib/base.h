@@ -33,7 +33,7 @@ class JSONable {
 
  protected:
   /// @brief Проверяет данные в классе на валидность
-  virtual void CheckErrorValues() const = 0;
+  virtual void CheckErrorValues_() const = 0;
 
  private:
   /// @brief Идентификатор объекта внутри файла

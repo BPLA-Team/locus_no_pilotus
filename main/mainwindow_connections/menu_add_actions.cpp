@@ -58,7 +58,7 @@ void MainWindow::AddHill(const std::vector<std::pair<double, double>>& points) {
 }
 
 void MainWindow::on_targetAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   AddTargetForm* atf = new AddTargetForm;
   atf->show();
@@ -66,7 +66,7 @@ void MainWindow::on_targetAction_triggered() {
 }
 
 void MainWindow::on_trappyCircleAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   AddTrappyCircleForm* adf = new AddTrappyCircleForm;
   adf->show();
@@ -75,7 +75,7 @@ void MainWindow::on_trappyCircleAction_triggered() {
 }
 
 void MainWindow::on_trappyLineAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   AddTrappyLineForm* adl = new AddTrappyLineForm;
   adl->show();
@@ -84,7 +84,7 @@ void MainWindow::on_trappyLineAction_triggered() {
 }
 
 void MainWindow::on_hillAction_triggered() {
-  DeleteLastAddedObject();
+  DeleteLastAddedObject_();
 
   AddHillForm* adh = new AddHillForm;
   adh->show();

@@ -40,7 +40,7 @@ bool IsExistId(const std::vector<unsigned short>& ids, unsigned short curr_id) {
 
 void GuiJsonFile::Open(data_tools::DataManager* manager) {
   if (file_->open(QIODevice::ReadOnly | QFile::Text)) {
-    QJsonObject root = LoadJson();
+    QJsonObject root = LoadJson_();
 
     if (!(root.contains("Targets") && root.contains("Trappy_Circles") &&
           root.contains("Trappy_Lines") && root.contains("Hills")))
