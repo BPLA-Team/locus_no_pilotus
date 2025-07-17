@@ -11,7 +11,7 @@ file(GLOB_RECURSE PROJECT_SOURCES "*.h" "*.cpp" "*.ui"
 include_directories(${PROJECT_DIR})
 
 # -----------------------------         Add executable         -----------------------------
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+if(6 GREATER_EQUAL 6)
   qt_add_executable(main MANUAL_FINALIZATION ${PROJECT_SOURCES})
 else()
   add_executable(main ${PROJECT_SOURCES})
@@ -20,8 +20,8 @@ endif()
 # ------------------------------    Include other libraries    -----------------------------
 # Qt libs:
 target_link_libraries(main PRIVATE
-  Qt${QT_VERSION_MAJOR}::Widgets
-  Qt${QT_VERSION_MAJOR}::Core
+  Qt6::Widgets
+  Qt6::Core
 )
 
 # QCustomPlot lib:

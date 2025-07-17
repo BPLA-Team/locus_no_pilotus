@@ -15,4 +15,4 @@ add_library(lib STATIC ${LIB_SOURCES})
 
 # -----------------------------     Include other libraries    -----------------------------
 # Qt libs:
-target_link_libraries(lib PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(lib PRIVATE Qt6::Core)

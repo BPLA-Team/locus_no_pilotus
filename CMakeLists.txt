@@ -26,11 +26,15 @@ set(CMAKE_AUTORCC ON)
 include(cmake_paths.cmake)
 
 # ---------------------------------         Find Qt        ---------------------------------
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Core PrintSupport REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Core PrintSupport REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Widgets Core PrintSupport REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Core PrintSupport REQUIRED)
 
 # ---------------------------------       Find Boost       ---------------------------------
 set(Boost_USE_STATIC_LIBS OFF)
+
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
 
 find_package(Boost REQUIRED COMPONENTS locale unit_test_framework)
 
