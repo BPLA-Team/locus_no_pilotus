@@ -99,7 +99,3 @@ _Coming soon..._
 **[Akramov Nikita](https://github.com/MrWh1teF0x "jsons, add forms, cursors, animation, scale hero")**
 
 **[Krivoruchko Dmitry](https://github.com/UmbrellaLeaf5 "repo manager and gui guy with tables instead of muscles and arcs instead of veins")**
-
-## Presentation
-
-**[Video-presentation](https://disk.yandex.ru/i/R-6LPpjHcT5Fdw)** of out project on Russian language (with all team members).
