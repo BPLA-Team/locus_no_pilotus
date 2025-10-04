@@ -6,6 +6,10 @@
 
 **Project of four first grade MIPT DAFE/RSE students (for engineering practical work in the second semester) in Qt C++**
 
+<div align="center">
+  <img src=".extra/images/program_works.png" alt="Program">
+</div>
+
 ## Documentation
 
 Project's [documentation](https://bpla-team.github.io/locus_no_pilotus/index.html) generated with Doxygen with [convenient CSS theme](#used-libs-and-sources).
@@ -16,7 +20,6 @@ Project's [documentation](https://bpla-team.github.io/locus_no_pilotus/index.htm
 - [Installation and configuring](#installation-and-configuring "with using MSYS")
 - [Used libs and sources](#used-libs-and-sources "we are using GitHub submodules feature 😎")
 - [Authors](#authors "the best guys")
-- [Presentation](#presentation "video link")
 
 ## Description
 
