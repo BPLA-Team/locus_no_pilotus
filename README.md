@@ -4,11 +4,15 @@
   <img src=".extra/images/icon.png" alt="Logo" width="80" height="80">
 </div>
 
-**Project of four first grade MIPT DAFE/RSE students (for engineering practical work in the second semester) in Qt C++**
+**Project of four first grade MIPT AES DAFE students (for engineering practical work in the second semester) in Qt C++**
+
+<div align="center">
+  <img src=".extra/images/program_works.png" alt="Program">
+</div>
 
 ## Documentation
 
-Project's [documentation](https://bpla-team.github.io/locus_no_pilotus/index.html) generated with Doxygen with [convenient CSS theme](#used-libs-and-sources).
+Project's [documentation](https://bpla-team.github.io/locus_no_pilotus) generated with Doxygen with [convenient CSS theme](#used-libs-and-sources).
 
 # Contents
 
@@ -16,7 +20,6 @@ Project's [documentation](https://bpla-team.github.io/locus_no_pilotus/index.htm
 - [Installation and configuring](#installation-and-configuring "with using MSYS")
 - [Used libs and sources](#used-libs-and-sources "we are using GitHub submodules feature 😎")
 - [Authors](#authors "the best guys")
-- [Presentation](#presentation "video link")
 
 ## Description
 
@@ -24,7 +27,10 @@ In this project, we are developing an application that calculates the trajectory
 On its way, it may encounter high mountains that it cannot fly over: **Hills**; or elliptical territories that are impossible to visit due to climate conditions: **TrappyCircles**.
 Also, through some control points, the robot is simply unable to move, as the cargo may not be ready for transportation at that time, these are **TrappyLines**.
 
-The robot's trajectory is calculated using several mathematical algorithms: [...].
+The robot's trajectory is calculated using several mathematical algorithms: Little's Algorithm (solving the Traveling Salesman Problem (TSP) for multiple robots), Dijkstra's Algorithm (finding the shortest path between two points in a graph), Geometric Algorithms for Obstacle Handling (tangents to circles and polygons and intersection checking), Visibility Graph Construction, Composite Trajectory Planning Algorithm.
+
+This is a comprehensive system that combines geometric computations with optimization algorithms to solve complex trajectory planning problems in the presence of obstacles. The algorithms work together to find collision-free paths that minimize total travel distance while visiting all required points.
+
 The graphical interface for constructing the trajectory was created using [Qt](#used-libs-and-sources) and [QCustomPlot](#used-libs-and-sources).
 
 In the application, you can add objects using window forms, interact with the trajectory calculation plot using the mouse cursor, create and open files in `.json` format with a specific style for this application. Editing objects can also be done with cursors or using a special dynamic input field with tables, opened in a separate window mode or embedded in the main one.
