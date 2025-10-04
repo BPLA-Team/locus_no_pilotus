@@ -4,7 +4,7 @@
   <img src=".extra/images/icon.png" alt="Logo" width="80" height="80">
 </div>
 
-**Project of four first grade MIPT DAFE/RSE students (for engineering practical work in the second semester) in Qt C++**
+**Project of four first grade MIPT AES DAFE students (for engineering practical work in the second semester) in Qt C++**
 
 <div align="center">
   <img src=".extra/images/program_works.png" alt="Program">
@@ -12,7 +12,7 @@
 
 ## Documentation
 
-Project's [documentation](https://bpla-team.github.io/locus_no_pilotus/index.html) generated with Doxygen with [convenient CSS theme](#used-libs-and-sources).
+Project's [documentation](https://bpla-team.github.io/locus_no_pilotus) generated with Doxygen with [convenient CSS theme](#used-libs-and-sources).
 
 # Contents
 
