@@ -17,7 +17,11 @@ Project's [documentation](https://bpla-team.github.io/locus_no_pilotus) generate
 # Contents
 
 - [Description](#description)
+- [Architecture](#architecture)
 - [Installation and configuring](#installation-and-configuring "with using MSYS")
+  - [On Windows 64 bit system](#on-windows-64-bit-system)
+  - [On Linux system](#on-linux-system)
+- [Running tests](#running-tests)
 - [Used libs and sources](#used-libs-and-sources "we are using GitHub submodules feature 😎")
 - [Authors](#authors "the best guys")
 
@@ -36,6 +40,21 @@ The graphical interface for constructing the trajectory was created using [Qt](#
 In the application, you can add objects using window forms, interact with the trajectory calculation plot using the mouse cursor, create and open files in `.json` format with a specific style for this application. Editing objects can also be done with cursors or using a special dynamic input field with tables, opened in a separate window mode or embedded in the main one.
 
 _We strongly recommend that you install our application using the instructions below and try it out!_
+
+## Architecture
+
+The project is organized into four layered namespaces:
+
+```
+main/           - Application entry point (QApplication + MainWindow)
+data_tools/     - MVC glue: DataManager (central data store), PlotArea (plot orchestration), TablesConnection (bidirectional table↔data sync)
+├── gui/        - Drawable objects (visual wrappers around lib:: domain classes, QCustomPlot rendering)
+└── lib/        - Pure domain model: Point, Target, Hill, TrappyCircle, TrappyLine, Segment (no Qt GUI dependency)
+math/           - Computational geometry (visibility graphs, Dijkstra) + Little's branch-and-bound TSP solver
+tests/          - Boost.Test unit tests (100+ test cases covering lib/ and math/)
+```
+
+**Data flow:** JSON file ↔ DataManager ↔ gui:: objects ↔ QCustomPlot plot. The `math/` module receives `lib::` data, computes the trajectory, and returns `lib::Segment` results which are wrapped as `gui::Segment` for visualization.
 
 ## Installation and configuring
 
@@ -81,16 +100,82 @@ git clone --recurse-submodules https://github.com/BPLA-Team/locus_no_pilotus
 
 #### On Linux system
 
-_Coming soon..._
+1. Install required packages. On **Ubuntu/Debian**:
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build gdb clang
+sudo apt install qt6-base-dev qt6-tools-dev libqt6printsupport6-dev
+sudo apt install libboost-all-dev
+```
+
+On **Fedora**:
+
+```bash
+sudo dnf install gcc-c++ cmake ninja-build gdb clang
+sudo dnf install qt6-qtbase-devel qt6-qttools-devel
+sudo dnf install boost-devel
+```
+
+On **Arch Linux**:
+
+```bash
+sudo pacman -S base-devel cmake ninja gdb clang
+sudo pacman -S qt6-base qt6-tools
+sudo pacman -S boost
+```
+
+2. Clone the repository with submodules:
+
+```bash
+git clone --recurse-submodules https://github.com/BPLA-Team/locus_no_pilotus
+cd locus_no_pilotus
+```
+
+3. Build the project with CMake:
+
+```bash
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+4. Run the application:
+
+```bash
+./build/main/locus_no_pilotus
+```
+
+> _P.S. The project requires Qt6 - Qt5 fallback was removed as of commit `69d0a4b`._
 
 > Much respect and help for this installation method to [George Sukhanov](https://github.com/TheFueRr "our colleague with an equally interesting project on processing experimental data")!
+
+## Running tests
+
+The project includes **100+ unit tests** using the [Boost.Test](https://www.boost.org/doc/libs/release/libs/test/) framework, covering both the core data library and all mathematical algorithms.
+
+**Test coverage:**
+| Module | What's tested |
+|---|---|
+| `lib/` | Point arithmetic (1000 random iterations), Segment construction (lines & arcs), Target & TrappyCircle getters/setters |
+| `math/` | Tangents between obstacles (all types), intersection detection, distance functions (point, circle, polygon), Dijkstra's algorithm (6 hand-crafted graphs), Little's TSP solver (single & multi-salesman, random/symmetric/obstacle-wise matrices, 2×2 to 10×10), optimal way end-to-end (12 obstacle scenarios) |
+
+**Running tests from command line** (after building):
+
+```bash
+# In the build directory:
+ctest --test-dir build
+# Or run the test executable directly:
+./build/tests/tests
+```
+
+**Running tests in Qt Creator:** select the `tests` target in the run configuration dropdown and press **Run** (green triangle).
 
 ## Used libs and sources
 
 - [CMake](https://cmake.org/): main project build system
 - [Qt](https://www.qt.io/): main project library for full-working program
 - [QCustomPlot](https://www.qcustomplot.com/): library for drawing all objects on same place with autoscaling ([submodule](https://github.com/UmbrellaLeaf5/qcustomplot "reference for submodule with lib in GitHub"))
-- [IceCream-Cpp](https://github.com/renatoGarcia/icecream-cpp): library for simple code debugging (we really recommend to use it in C++ projects)
+- [Boost](https://www.boost.org/): Boost.Test for unit testing, Boost.Locale for string processing
 - [Doxygen](https://www.doxygen.nl/): full documentation generation
 - [Doxygen Awesome](https://github.com/jothepro/doxygen-awesome-css): convenient CSS theme for Doxygen HTML documentation (it is really awesome)
 - [Flaticon](https://www.flaticon.com/): perfect icons source
