@@ -1,6 +1,6 @@
 [submodule "qcustomplot"]
 	path = qcustomplot
-	url = https://github.com/UmbrellaLeaf5/qcustomplot
+	url = git@github.com:UmbrellaLeaf5/qcustomplot.git
 [submodule "doxygen_awesome"]
 	path = .extra/doxygen/theme
-	url = https://github.com/jothepro/doxygen-awesome-css
+	url = git@github.com:jothepro/doxygen-awesome-css.git
